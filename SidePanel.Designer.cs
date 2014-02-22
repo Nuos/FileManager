@@ -38,9 +38,9 @@
             this.refreshListsBtn = new System.Windows.Forms.ToolStripButton();
             this.deleteItemBtn = new System.Windows.Forms.ToolStripButton();
             this.compareDirsBtn = new System.Windows.Forms.ToolStripButton();
+            this.compareFilesBtn = new System.Windows.Forms.ToolStripButton();
             this.pathBox = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.compareTxtBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@
             this.refreshListsBtn,
             this.deleteItemBtn,
             this.compareDirsBtn,
-            this.compareTxtBtn});
+            this.compareFilesBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(396, 25);
@@ -70,6 +70,7 @@
             this.upDirBtn.Name = "upDirBtn";
             this.upDirBtn.Size = new System.Drawing.Size(23, 22);
             this.upDirBtn.Text = "toolStripButton1";
+            this.upDirBtn.ToolTipText = "Directory Up";
             this.upDirBtn.Click += new System.EventHandler(this.tsb_UpDir_Click);
             // 
             // rootDirBtn
@@ -79,6 +80,7 @@
             this.rootDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.rootDirBtn.Name = "rootDirBtn";
             this.rootDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.rootDirBtn.ToolTipText = "Root Directory";
             this.rootDirBtn.Click += new System.EventHandler(this.rootDirBtn_Click);
             // 
             // newDirBtn
@@ -88,6 +90,7 @@
             this.newDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newDirBtn.Name = "newDirBtn";
             this.newDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.newDirBtn.ToolTipText = "New Folder";
             this.newDirBtn.Click += new System.EventHandler(this.newDirBtn_Click);
             // 
             // copyItemBtn
@@ -97,7 +100,7 @@
             this.copyItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyItemBtn.Name = "copyItemBtn";
             this.copyItemBtn.Size = new System.Drawing.Size(23, 22);
-            this.copyItemBtn.Text = "toolStripButton1";
+            this.copyItemBtn.Text = "Copy File";
             this.copyItemBtn.Click += new System.EventHandler(this.copyItemBtn_Click);
             // 
             // moveItemBtn
@@ -107,7 +110,7 @@
             this.moveItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveItemBtn.Name = "moveItemBtn";
             this.moveItemBtn.Size = new System.Drawing.Size(23, 22);
-            this.moveItemBtn.Text = "toolStripButton1";
+            this.moveItemBtn.Text = "Move";
             this.moveItemBtn.Click += new System.EventHandler(this.moveItemBtn_Click);
             // 
             // refreshListsBtn
@@ -117,7 +120,7 @@
             this.refreshListsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshListsBtn.Name = "refreshListsBtn";
             this.refreshListsBtn.Size = new System.Drawing.Size(23, 22);
-            this.refreshListsBtn.Text = "toolStripButton1";
+            this.refreshListsBtn.Text = "Refresh Lists";
             this.refreshListsBtn.Click += new System.EventHandler(this.refreshListsBtn_Click);
             // 
             // deleteItemBtn
@@ -127,18 +130,28 @@
             this.deleteItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteItemBtn.Name = "deleteItemBtn";
             this.deleteItemBtn.Size = new System.Drawing.Size(23, 22);
-            this.deleteItemBtn.Text = "toolStripButton1";
+            this.deleteItemBtn.Text = "Delete Item";
             this.deleteItemBtn.Click += new System.EventHandler(this.deleteItemBtn_Click);
             // 
             // compareDirsBtn
             // 
             this.compareDirsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.compareDirsBtn.Image = global::FileManager.Properties.Resources._041_Sort_16x16_72_rot;
+            this.compareDirsBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareDirsBtn.Image")));
             this.compareDirsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.compareDirsBtn.Name = "compareDirsBtn";
             this.compareDirsBtn.Size = new System.Drawing.Size(23, 22);
-            this.compareDirsBtn.Text = "toolStripButton1";
+            this.compareDirsBtn.Text = "Compare Folders";
             this.compareDirsBtn.Click += new System.EventHandler(this.compareDirsBtn_Click);
+            // 
+            // compareFilesBtn
+            // 
+            this.compareFilesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.compareFilesBtn.Image = global::FileManager.Properties.Resources.compare;
+            this.compareFilesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.compareFilesBtn.Name = "compareFilesBtn";
+            this.compareFilesBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareFilesBtn.Text = "Compare Files Content";
+            this.compareFilesBtn.Click += new System.EventHandler(this.compareFilesBtn_Click);
             // 
             // pathBox
             // 
@@ -159,15 +172,6 @@
             this.listBox1.Size = new System.Drawing.Size(396, 411);
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
-            // 
-            // compareTxtBtn
-            // 
-            this.compareTxtBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.compareTxtBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareTxtBtn.Image")));
-            this.compareTxtBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.compareTxtBtn.Name = "compareTxtBtn";
-            this.compareTxtBtn.Size = new System.Drawing.Size(23, 22);
-            this.compareTxtBtn.Text = "toolStripButton1";
             // 
             // SidePanel
             // 
@@ -199,6 +203,6 @@
         private System.Windows.Forms.ToolStripButton refreshListsBtn;
         private System.Windows.Forms.ToolStripButton deleteItemBtn;
         private System.Windows.Forms.ToolStripButton compareDirsBtn;
-        private System.Windows.Forms.ToolStripButton compareTxtBtn;
+        private System.Windows.Forms.ToolStripButton compareFilesBtn;
 	}
 }

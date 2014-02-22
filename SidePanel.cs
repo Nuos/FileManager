@@ -226,6 +226,24 @@ namespace FileManager
             pathBox.Text = CurrentDirectory;
         }
 
+        private void compareFilesBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_parentMainForm.FileContentEquals(this))
+                    MessageBox.Show("The files content is equal.", "Content Comparison");
+                else
+                {
+                    MessageBox.Show("The files content is different.", "Content Comparison");
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("One or more selections isn't a file!", "Error");
+            }
+
+        }
+
 
 	}
 

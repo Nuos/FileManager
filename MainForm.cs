@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -119,6 +120,38 @@ namespace FileManager
         //{
         //    if ( (File) file1.ends
         //}
+
+
+	    public bool FileContentEquals(SidePanel sidePanel1)
+	    {
+	        SidePanel sidePanel2 = (sidePanel1 == this.sidePanel1) ? this.sidePanel2 : this.sidePanel1;
+
+            string path1 = Path.Combine(sidePanel1.CurrentDirectory, sidePanel1.SelectedItem.ToString());
+            string path2 = Path.Combine(sidePanel2.CurrentDirectory, sidePanel2.SelectedItem.ToString());
+
+            if (sidePanel1.SelectedItem != null && sidePanel1.SelectedItem != null
+                /*&& File.Exists(path1) && File.Exists(path2) */)
+	        {
+	            byte[] file1 = File.ReadAllBytes(path1);
+	            byte[] file2 = File.ReadAllBytes(path2);
+	            if (file1.Length == file2.Length)
+	            {
+	                for (int i = 0; i < file1.Length; i++)
+	                {
+	                    if (file1[i] != file2[i])
+	                    {
+	                        return false;
+	                    }
+	                }
+	                return true;
+	            }
+            }
+	        
+            return false;
+	      
+	     
+	    }
+
 
 	    private class DirCompare
 	    {

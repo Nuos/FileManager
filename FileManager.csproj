@@ -96,6 +96,7 @@
     <Content Include="Icon Resource\112_LeftArrowShort_Blue_16x16_72.png" />
     <Content Include="Icon Resource\112_RefreshArrow_Blue_16x16_72.png" />
     <Content Include="Icon Resource\112_UpArrowLong_Blue_16x16_72.png" />
+    <Content Include="Icon Resource\compare.png" />
     <Content Include="Icon Resource\copy_16x16.png" />
     <Content Include="Icon Resource\delete_16x16.png" />
     <Content Include="Icon Resource\replace_folder_16x16.png" />
