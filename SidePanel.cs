@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
 
 namespace FileManager
@@ -18,6 +19,12 @@ namespace FileManager
 		{
 			InitializeComponent();
 		    this._parentMainForm = mainForm;
+            comboBoxDrives.DropDownStyle = ComboBoxStyle.DropDownList;
+            
+            comboBoxDrives.Items.AddRange(DriveInfo.GetDrives());
+		    comboBoxDrives.SelectedItem = comboBoxDrives.Items[0];
+
+
 		}
 
         public Object SelectedItem
@@ -61,9 +68,20 @@ namespace FileManager
 
 				pathBox.Text = value;
                 _curPath = value;
+			    //string curDrive = _curPath[0].ToString().ToUpper() + ":\";
+
+			    var curDrive = Path.GetPathRoot(_curPath);
+
+			    foreach (object drive in comboBoxDrives.Items)
+			    {
+			        if (drive.ToString().ToUpper() == curDrive.ToUpper())
+			            comboBoxDrives.SelectedItem = drive;
+			    }
 
 			}
 		}
+
+
 
 		private void SidePanel_Load(object sender, EventArgs e)
 		{
@@ -242,6 +260,13 @@ namespace FileManager
                 MessageBox.Show("One or more selections isn't a file!", "Error");
             }
 
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            string filename = PromptDialog.ShowDialog("Enter file name:", "New text file");
+
+            TextEditor txt = new TextEditor(Path.Combine(this.CurrentDirectory, filename));
         }
 
 

@@ -39,8 +39,11 @@
             this.deleteItemBtn = new System.Windows.Forms.ToolStripButton();
             this.compareDirsBtn = new System.Windows.Forms.ToolStripButton();
             this.compareFilesBtn = new System.Windows.Forms.ToolStripButton();
+            this.txtEditorBtn = new System.Windows.Forms.ToolStripButton();
             this.pathBox = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.comboBoxDrives = new System.Windows.Forms.ToolStripComboBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +58,10 @@
             this.refreshListsBtn,
             this.deleteItemBtn,
             this.compareDirsBtn,
-            this.compareFilesBtn});
+            this.compareFilesBtn,
+            this.txtEditorBtn,
+            this.toolStripButton1,
+            this.comboBoxDrives});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(396, 25);
@@ -79,7 +85,7 @@
             this.rootDirBtn.Image = ((System.Drawing.Image)(resources.GetObject("rootDirBtn.Image")));
             this.rootDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.rootDirBtn.Name = "rootDirBtn";
-            this.rootDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.rootDirBtn.Size = new System.Drawing.Size(23, 24);
             this.rootDirBtn.ToolTipText = "Root Directory";
             this.rootDirBtn.Click += new System.EventHandler(this.rootDirBtn_Click);
             // 
@@ -89,7 +95,7 @@
             this.newDirBtn.Image = ((System.Drawing.Image)(resources.GetObject("newDirBtn.Image")));
             this.newDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newDirBtn.Name = "newDirBtn";
-            this.newDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.newDirBtn.Size = new System.Drawing.Size(23, 24);
             this.newDirBtn.ToolTipText = "New Folder";
             this.newDirBtn.Click += new System.EventHandler(this.newDirBtn_Click);
             // 
@@ -99,7 +105,7 @@
             this.copyItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("copyItemBtn.Image")));
             this.copyItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyItemBtn.Name = "copyItemBtn";
-            this.copyItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.copyItemBtn.Size = new System.Drawing.Size(23, 24);
             this.copyItemBtn.Text = "Copy File";
             this.copyItemBtn.Click += new System.EventHandler(this.copyItemBtn_Click);
             // 
@@ -109,7 +115,7 @@
             this.moveItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("moveItemBtn.Image")));
             this.moveItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveItemBtn.Name = "moveItemBtn";
-            this.moveItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.moveItemBtn.Size = new System.Drawing.Size(23, 24);
             this.moveItemBtn.Text = "Move";
             this.moveItemBtn.Click += new System.EventHandler(this.moveItemBtn_Click);
             // 
@@ -119,7 +125,7 @@
             this.refreshListsBtn.Image = ((System.Drawing.Image)(resources.GetObject("refreshListsBtn.Image")));
             this.refreshListsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshListsBtn.Name = "refreshListsBtn";
-            this.refreshListsBtn.Size = new System.Drawing.Size(23, 22);
+            this.refreshListsBtn.Size = new System.Drawing.Size(23, 24);
             this.refreshListsBtn.Text = "Refresh Lists";
             this.refreshListsBtn.Click += new System.EventHandler(this.refreshListsBtn_Click);
             // 
@@ -129,7 +135,7 @@
             this.deleteItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("deleteItemBtn.Image")));
             this.deleteItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteItemBtn.Name = "deleteItemBtn";
-            this.deleteItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.deleteItemBtn.Size = new System.Drawing.Size(23, 24);
             this.deleteItemBtn.Text = "Delete Item";
             this.deleteItemBtn.Click += new System.EventHandler(this.deleteItemBtn_Click);
             // 
@@ -139,19 +145,29 @@
             this.compareDirsBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareDirsBtn.Image")));
             this.compareDirsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.compareDirsBtn.Name = "compareDirsBtn";
-            this.compareDirsBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareDirsBtn.Size = new System.Drawing.Size(23, 24);
             this.compareDirsBtn.Text = "Compare Folders";
             this.compareDirsBtn.Click += new System.EventHandler(this.compareDirsBtn_Click);
             // 
             // compareFilesBtn
             // 
             this.compareFilesBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.compareFilesBtn.Image = global::FileManager.Properties.Resources.compare;
+            this.compareFilesBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareFilesBtn.Image")));
             this.compareFilesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.compareFilesBtn.Name = "compareFilesBtn";
-            this.compareFilesBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareFilesBtn.Size = new System.Drawing.Size(23, 24);
             this.compareFilesBtn.Text = "Compare Files Content";
             this.compareFilesBtn.Click += new System.EventHandler(this.compareFilesBtn_Click);
+            // 
+            // txtEditorBtn
+            // 
+            this.txtEditorBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.txtEditorBtn.Image = global::FileManager.Properties.Resources._1462_Pencil_16x16;
+            this.txtEditorBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.txtEditorBtn.Name = "txtEditorBtn";
+            this.txtEditorBtn.Size = new System.Drawing.Size(23, 24);
+            this.txtEditorBtn.Text = "toolStripButton1";
+            this.txtEditorBtn.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // pathBox
             // 
@@ -172,6 +188,22 @@
             this.listBox1.Size = new System.Drawing.Size(396, 411);
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // comboBoxDrives
+            // 
+            this.comboBoxDrives.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.comboBoxDrives.Name = "comboBoxDrives";
+            this.comboBoxDrives.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxDrives.Sorted = true;
             // 
             // SidePanel
             // 
@@ -204,5 +236,8 @@
         private System.Windows.Forms.ToolStripButton deleteItemBtn;
         private System.Windows.Forms.ToolStripButton compareDirsBtn;
         private System.Windows.Forms.ToolStripButton compareFilesBtn;
+        private System.Windows.Forms.ToolStripButton txtEditorBtn;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripComboBox comboBoxDrives;
 	}
 }
