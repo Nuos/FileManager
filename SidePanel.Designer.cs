@@ -40,6 +40,7 @@
             this.compareDirsBtn = new System.Windows.Forms.ToolStripButton();
             this.pathBox = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.compareTxtBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +54,8 @@
             this.moveItemBtn,
             this.refreshListsBtn,
             this.deleteItemBtn,
-            this.compareDirsBtn});
+            this.compareDirsBtn,
+            this.compareTxtBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(396, 25);
@@ -158,6 +160,15 @@
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
+            // compareTxtBtn
+            // 
+            this.compareTxtBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.compareTxtBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareTxtBtn.Image")));
+            this.compareTxtBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.compareTxtBtn.Name = "compareTxtBtn";
+            this.compareTxtBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareTxtBtn.Text = "toolStripButton1";
+            // 
             // SidePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,5 +199,6 @@
         private System.Windows.Forms.ToolStripButton refreshListsBtn;
         private System.Windows.Forms.ToolStripButton deleteItemBtn;
         private System.Windows.Forms.ToolStripButton compareDirsBtn;
+        private System.Windows.Forms.ToolStripButton compareTxtBtn;
 	}
 }
