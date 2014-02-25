@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization;
+using System.Security.AccessControl;
 using System.Windows.Forms;
 
 namespace FileManager
@@ -45,6 +47,16 @@ namespace FileManager
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
+			    try
+			    {
+			        DirectorySecurity ds = Directory.GetAccessControl(value);
+			    }
+			    catch (UnauthorizedAccessException exception)
+			    {
+			        MessageBox.Show(exception.Message, "Access denied");
+                    return;
+			    }
+			    
 				_curDir = new DirectoryInfo(value);
 
 				listBox1.Items.Clear();
@@ -116,7 +128,16 @@ namespace FileManager
 				CurrentDirectory = itemString;
 			} else if (File.Exists(itemString))
 			{
-                System.Diagnostics.Process.Start(itemString);
+
+			    try
+			    {
+			        System.Diagnostics.Process.Start(itemString);
+			    }
+                catch (Win32Exception exception)
+                {
+                    
+                    MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK , MessageBoxIcon.Exclamation);
+                }
 			}
 		}
 
@@ -267,6 +288,13 @@ namespace FileManager
             string filename = PromptDialog.ShowDialog("Enter file name:", "New text file");
 
             TextEditor txt = new TextEditor(Path.Combine(this.CurrentDirectory, filename));
+        }
+
+        private void comboBoxDrives_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            this.CurrentDirectory = comboBoxDrives.SelectedItem.ToString();
+            
         }
 
 

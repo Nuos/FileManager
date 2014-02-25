@@ -204,6 +204,7 @@
             this.comboBoxDrives.Name = "comboBoxDrives";
             this.comboBoxDrives.Size = new System.Drawing.Size(75, 25);
             this.comboBoxDrives.Sorted = true;
+            this.comboBoxDrives.SelectedIndexChanged += new System.EventHandler(this.comboBoxDrives_SelectedIndexChanged);
             // 
             // SidePanel
             // 
