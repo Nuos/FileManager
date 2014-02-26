@@ -47,7 +47,7 @@ namespace FileManager
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
-			    try
+			    try //Get access to the directory
 			    {
 			        DirectorySecurity ds = Directory.GetAccessControl(value);
 			    }
@@ -78,7 +78,7 @@ namespace FileManager
                 //listBox1.Items.AddRange(Directory.GetDirectories(value));
                 //listBox1.Items.AddRange(Directory.GetFiles(value));
 
-				pathBox.Text = value;
+				pathBox.Text = _curDir.ToString();
                 _curPath = value;
 			    //string curDrive = _curPath[0].ToString().ToUpper() + ":\";
 
@@ -118,9 +118,9 @@ namespace FileManager
 
             if ( Directory.GetParent(_curPath) == null)
 
-                itemString = String.Concat(_curPath + itemString);
+                itemString = Path.Combine(_curPath, itemString);
             else
-                itemString = String.Concat(_curPath + '\\' + itemString);
+                itemString = Path.Combine(_curPath, itemString);
 
 
 			if (Directory.Exists(itemString))
@@ -156,7 +156,7 @@ namespace FileManager
 
         private void rootDirBtn_Click(object sender, EventArgs e)
         {
-            CurrentDirectory = CurrentDirectory.Remove(3);
+            CurrentDirectory = Path.GetPathRoot(CurrentDirectory);
         }
 
         private void newDirBtn_Click(object sender, EventArgs e)
@@ -253,9 +253,9 @@ namespace FileManager
         {
             if (e.KeyValue == (char)Keys.Enter)
             {
-                if (Directory.Exists(pathBox.Text))
+                if (Directory.Exists(Path.GetFullPath(pathBox.Text)))
                 {
-                    CurrentDirectory = pathBox.Text;
+                    CurrentDirectory = Path.GetFullPath(pathBox.Text);
                 }
             }
         }
@@ -283,18 +283,48 @@ namespace FileManager
 
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void comboBoxDrives_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DriveInfo selectedDrive = (DriveInfo) comboBoxDrives.SelectedItem;
+            if (selectedDrive.IsReady)
+            {
+                this.CurrentDirectory = comboBoxDrives.SelectedItem.ToString();
+            }
+            else
+            {
+                MessageBox.Show("This drive isn't ready!", "Drive not ready");
+                string curDrive = Path.GetPathRoot(CurrentDirectory);
+                foreach (object currentDrive in comboBoxDrives.Items)
+                {
+                    if (currentDrive.ToString().ToUpper() == curDrive.ToUpper())
+                        comboBoxDrives.SelectedItem = currentDrive;
+                }
+
+            }
+
+        }
+
+        private void txtEditorBtn_Click(object sender, EventArgs e)
         {
             string filename = PromptDialog.ShowDialog("Enter file name:", "New text file");
 
             TextEditor txt = new TextEditor(Path.Combine(this.CurrentDirectory, filename));
         }
 
-        private void comboBoxDrives_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripButton1_Click(object sender, EventArgs e)
         {
 
-            this.CurrentDirectory = comboBoxDrives.SelectedItem.ToString();
-            
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            string searchValue = PromptDialog.ShowDialog("Enter search term:", "Search");
+
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+                listBox1.Items.Clear();
+                Operation.Search(searchValue, new DirectoryInfo(CurrentDirectory), listBox1);
+            }
         }
 
 

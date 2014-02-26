@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operation.cs" />
     <Compile Include="PromptDialog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -110,6 +111,7 @@
     <Content Include="Icon Resource\copy_16x16.png" />
     <Content Include="Icon Resource\delete_16x16.png" />
     <Content Include="Icon Resource\replace_folder_16x16.png" />
+    <Content Include="Icon Resource\search_16x16.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
