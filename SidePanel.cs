@@ -43,7 +43,8 @@ namespace FileManager
 			get { return _curDir.FullName; }
 			set
 			{
-                
+			    
+
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
@@ -59,6 +60,7 @@ namespace FileManager
 			    
 				_curDir = new DirectoryInfo(value);
 
+			    listBox1.DataSource = null;
 				listBox1.Items.Clear();
 
 
@@ -116,11 +118,9 @@ namespace FileManager
 
 			string itemString = listBox1.SelectedItem.ToString();
 
-            if ( Directory.GetParent(_curPath) == null)
-
+            if (pathBox.Text != "Search Results") 
                 itemString = Path.Combine(_curPath, itemString);
-            else
-                itemString = Path.Combine(_curPath, itemString);
+            
 
 
 			if (Directory.Exists(itemString))
@@ -184,7 +184,7 @@ namespace FileManager
 
 	    private bool isLegalName(string name)
 	    {
-	        char[] invalid = System.IO.Path.GetInvalidFileNameChars();
+	        char[] invalid = Path.GetInvalidFileNameChars();
 
 	        for (int i = 0; i < name.Length; i++)
 	        {
@@ -253,10 +253,23 @@ namespace FileManager
         {
             if (e.KeyValue == (char)Keys.Enter)
             {
-                if (Directory.Exists(Path.GetFullPath(pathBox.Text)))
+                try
                 {
-                    CurrentDirectory = Path.GetFullPath(pathBox.Text);
+                    if (Directory.Exists(Path.GetFullPath(pathBox.Text)))
+                    {
+                        CurrentDirectory = Path.GetFullPath(pathBox.Text);
+                    }
                 }
+                catch (ArgumentException)
+                {
+
+                    var filterItems = Operation.FilterItems(pathBox.Text);
+                    if (filterItems != null)
+                        listBox1.DataSource = filterItems;
+                }
+                
+
+                
             }
         }
 
@@ -292,7 +305,7 @@ namespace FileManager
             }
             else
             {
-                MessageBox.Show("This drive isn't ready!", "Drive not ready");
+                MessageBox.Show("This drive isn't ready!", "Drive not ready", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 string curDrive = Path.GetPathRoot(CurrentDirectory);
                 foreach (object currentDrive in comboBoxDrives.Items)
                 {
@@ -323,7 +336,10 @@ namespace FileManager
             if (!String.IsNullOrEmpty(searchValue))
             {
                 listBox1.Items.Clear();
+                //this._curPath = "Search Results";
+
                 Operation.Search(searchValue, new DirectoryInfo(CurrentDirectory), listBox1);
+                listBox1.DataSource =  Operation.Search(searchValue, new DirectoryInfo(CurrentDirectory), listBox1);
             }
         }
 
