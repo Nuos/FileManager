@@ -14,10 +14,12 @@ namespace FileManager
 		[STAThread]
 		static void Main()
 		{
-
+            //Operation.Subscribe();
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+			//Application.Run(new MainForm());
+		    var app = new Controller();
+
 		}
 	}
 }

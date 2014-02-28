@@ -14,91 +14,91 @@ namespace FileManager
 {
 	public partial class MainForm : Form
 	{
+	    
 		public MainForm()
 		{
 			InitializeComponent();
 		}
+
+        public SidePanel SidePanelLeft
+        {
+            get { return sidePanel1; }
+        }
+
+        public SidePanel SidePanelRight
+        {
+            get { return sidePanel2; }
+        }
+
 
 	    public void Copy(SidePanel source, string name)
 	    {
 	        SidePanel target;
 	        target = (source == sidePanel1) ? sidePanel2 : sidePanel1;
 
-            //if (Directory.Exists(source.CurrentDirectory + name))
-            //{
-            //    //Now Create all of the directories
-            //    foreach (string dirPath in Directory.GetDirectories(source.CurrentDirectory, "*", SearchOption.AllDirectories))
-            //        Directory.CreateDirectory(dirPath.Replace(source.CurrentDirectory, target.CurrentDirectory));
 
-            //    //Copy all the files
-            //    foreach (string filePath in Directory.GetFiles(source.CurrentDirectory, "*.*", SearchOption.AllDirectories))
-            //        File.Copy(filePath, filePath.Replace(source.CurrentDirectory, target.CurrentDirectory));
-            //}
-            //else
-            
             if (File.Exists( Path.Combine(source.CurrentDirectory, name)))
             {
-                //File.Create( Path.Combine(target.CurrentDirectory, name));
-
+                
                 File.Copy(Path.Combine(source.CurrentDirectory, name), Path.Combine(target.CurrentDirectory, name));
-                RefreshLists();
+                //RefreshLists(); //TEMPORARY - TAKE CARE!!!
             }
 
 	    }
 
-	    public void Delete(SidePanel source, string name)
-	    {
+        //public void Delete(SidePanel source, string name)
+        //{
+
+        //    if (File.Exists(Path.Combine(source.CurrentDirectory, name)))
+        //    {
+        //        if (MessageBox.Show("Are You sure you want to delete the file " + name + "?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+        //            File.Delete(Path.Combine(source.CurrentDirectory, name));
+        //        RefreshLists();
+        //    }
+        //    else if (Directory.Exists(Path.Combine(source.CurrentDirectory, name)))
+        //    {
+        //        if (
+        //            MessageBox.Show(
+        //                "Are You sure you want to delete the folder " + name + " \nand all of its contents?",
+        //                "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        //        {
+        //            RecursiveDeletion(Path.Combine(source.CurrentDirectory, name));
+        //        }
+
+
+        //        RefreshLists();
+        //    }
+
+        //}
+
+
+
+        //private void RecursiveDeletion(string path)
+        //{
+        //    foreach (string thisPath in Directory.GetDirectories(path))
+        //    {
+        //        RecursiveDeletion(thisPath);
+        //    }
+
+        //    foreach (string filename in Directory.GetFiles(path))
+        //        File.Delete(Path.GetFullPath(filename));
             
-            if (File.Exists(Path.Combine(source.CurrentDirectory, name)))
-            {
-                if (MessageBox.Show("Are You sure you want to delete the file " + name + "?", "Confirm delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
-
-                File.Delete( Path.Combine(source.CurrentDirectory, name) );
-                RefreshLists();
-            }
-            else if (Directory.Exists( Path.Combine(source.CurrentDirectory, name)))
-            {
-                if (
-                    MessageBox.Show(
-                        "Are You sure you want to delete the folder" + name + " \nand all of its contents?",
-                        "Confirm delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    RecursiveDeletion(Path.Combine(source.CurrentDirectory, name));
-                }
-                    
-
-                RefreshLists();
-            }
             
-        }
+        //    Directory.Delete(Path.GetFullPath(path));
 
+        //}
 
+        //public void RefreshLists()
+        //{
+        //    string dir = sidePanel1.CurrentDirectory;
+        //    sidePanel1.CurrentDirectory = SidePanel.InitialDirectory;
+        //    sidePanel1.CurrentDirectory = dir;
 
-	    private void RecursiveDeletion(string path)
-	    {
-	        foreach (string thisPath in Directory.GetDirectories(path))
-	        {
-	            RecursiveDeletion(thisPath);
-            }
-
-            foreach (string filename in Directory.GetFiles(path))
-                File.Delete(Path.GetFullPath(filename));
-            
-            
-            Directory.Delete(Path.GetFullPath(path));
-
-	    }
-
-	    public void RefreshLists()
-	    {
-	        string dir = sidePanel1.CurrentDirectory;
-	        sidePanel1.CurrentDirectory = SidePanel.InitialDirectory;
-	        sidePanel1.CurrentDirectory = dir;
-
-            dir = sidePanel2.CurrentDirectory;
-            sidePanel2.CurrentDirectory = SidePanel.InitialDirectory;
-            sidePanel2.CurrentDirectory = dir;
-	    }
+        //    dir = sidePanel2.CurrentDirectory;
+        //    sidePanel2.CurrentDirectory = SidePanel.InitialDirectory;
+        //    sidePanel2.CurrentDirectory = dir;
+        //}
 
 	    public bool DirectoriesEqual()
 	    {

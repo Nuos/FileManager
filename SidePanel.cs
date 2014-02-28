@@ -15,7 +15,20 @@ namespace FileManager
 	    private MainForm _parentMainForm;
 
 	    public const string InitialDirectory = @"C:\";
-	
+
+	    public delegate void OperateInFolder (DirectoryInfo directory, string name);
+
+	    public delegate void OperateInTwoFolders(DirectoryInfo source, DirectoryInfo target);
+
+	    public delegate void OperateOnGUI();
+
+	    public static event OperateInFolder DeleteFromFolder;
+	    public static event OperateInTwoFolders CopyFileToFolder;
+	    public static event OperateInTwoFolders MoveFileToFolder;
+	    public static event OperateOnGUI RefreshBothLists;
+
+
+
 
 		public SidePanel(MainForm mainForm)
 		{
@@ -35,7 +48,13 @@ namespace FileManager
             
         }
 
-   
+
+	    public void RefreshList()
+	    {
+            string dir = CurrentDirectory;
+            CurrentDirectory = SidePanel.InitialDirectory;
+            CurrentDirectory = dir;
+	    }
 	    
 
 	    public string CurrentDirectory
@@ -179,7 +198,7 @@ namespace FileManager
             else
                 MessageBox.Show("Illegal folder name!");
 
-            _parentMainForm.RefreshLists();
+           // _parentMainForm.RefreshLists(); TEMPORARY - TAKE CARE!!!
         }
 
 	    private bool isLegalName(string name)
@@ -216,17 +235,20 @@ namespace FileManager
         private void moveItemBtn_Click(object sender, EventArgs e)
         {
             _parentMainForm.Copy(this, listBox1.SelectedItem.ToString());
-            _parentMainForm.Delete(this, listBox1.SelectedItem.ToString());
+            //_parentMainForm.Delete(this, listBox1.SelectedItem.ToString()); //TEMPORARY
         }
 
         private void refreshListsBtn_Click(object sender, EventArgs e)
         {
-            _parentMainForm.RefreshLists();
+            if (RefreshBothLists != null)
+                RefreshBothLists();
         }
 
         private void deleteItemBtn_Click(object sender, EventArgs e)
         {
-            _parentMainForm.Delete(this, listBox1.SelectedItem.ToString());
+            //_parentMainForm.Delete(this, listBox1.SelectedItem.ToString());
+            if (DeleteFromFolder != null)
+                DeleteFromFolder(new DirectoryInfo(CurrentDirectory), this.SelectedItem.ToString());
         }
 
         private void compareDirsBtn_Click(object sender, EventArgs e)

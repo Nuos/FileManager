@@ -11,8 +11,62 @@ using System.Windows.Forms;
 
 namespace FileManager
 {
-    static class Operation
+    class Operation
     {
+
+        
+
+        public void DeleteDirectory(DirectoryInfo deleteFrom, string name)
+        {
+
+            RecursiveDeletion(Path.Combine(deleteFrom.ToString(), name));
+
+            //if (File.Exists(Path.Combine(deleteFrom.ToString(), name)))
+            //{
+            //    if (MessageBox.Show("Are You sure you want to delete the file " + name + "?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+            //        File.Delete(Path.Combine(deleteFrom.ToString(), name));
+            //    //RefreshLists();
+            //}
+            //else
+
+            //if (Directory.Exists(Path.Combine(deleteFrom.ToString(), name)))
+            //{
+            //    if (
+            //        MessageBox.Show(
+            //            "Are You sure you want to delete the folder " + name + " \nand all of its contents?",
+            //            "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        RecursiveDeletion(Path.Combine(deleteFrom.ToString(), name));
+            //    }
+
+
+            //    //RefreshLists();
+            //}
+
+        }
+
+        public void DeleteFile(DirectoryInfo deleteFrom, string name)
+        {
+            File.Delete(Path.Combine(deleteFrom.ToString(), name));
+        }
+
+
+        private static void RecursiveDeletion(string path)
+        {
+            foreach (string thisPath in Directory.GetDirectories(path))
+            {
+                RecursiveDeletion(thisPath);
+            }
+
+            foreach (string filename in Directory.GetFiles(path))
+                File.Delete(Path.GetFullPath(filename));
+
+
+            Directory.Delete(Path.GetFullPath(path));
+
+        }
+
         public static List<string> Search(string searchValue, DirectoryInfo directory, ListBox resultsListBox)
         {
             var resultsList = new List<string>();

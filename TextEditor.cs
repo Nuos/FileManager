@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +27,7 @@ namespace FileManager
 
         private void TextEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var save = MessageBox.Show("Do you want to save?", "Save Confirmation", MessageBoxButtons.YesNo);
+            var save = MessageBox.Show("Do you want to save the file?", "Save Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (save == DialogResult.Yes)
             {
                 Save();
@@ -39,7 +40,13 @@ namespace FileManager
                 File.WriteAllText(_path, richTextBox.Text);
             else
             {
-                MessageBox.Show("This file already exists!", "Can't overwrite");
+                var overWriteConfirm = MessageBox.Show("This file already exists!\nDo you want to overwrite?",
+                    "Confirm Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (overWriteConfirm == DialogResult.Yes)
+                {
+                    File.WriteAllText(_path, richTextBox.Text);
+                }
+                //MessageBox.Show("This file already exists!", "Can't overwrite");
             }
 
         }
