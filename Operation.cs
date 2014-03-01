@@ -36,14 +36,7 @@ namespace FileManager
 
         public bool IsFileContentEqual(FileInfo file1, FileInfo file2)
         {
-            //SidePanel sidePanel2 = (sidePanel1 == this.sidePanel1) ? this.sidePanel2 : this.sidePanel1;
 
-            //string path1 = Path.Combine(sidePanel1.CurrentDirectory, sidePanel1.SelectedItem.ToString());
-            //string path2 = Path.Combine(sidePanel2.CurrentDirectory, sidePanel2.SelectedItem.ToString());
-
-            //if (sidePanel1.SelectedItem != null && sidePanel1.SelectedItem != null
-            //    /*&& File.Exists(path1) && File.Exists(path2) */)
-            //{
                 byte[] fileInBytes1 = File.ReadAllBytes(file1.FullName);
                 byte[] fileInBytes2 = File.ReadAllBytes(file2.FullName);
 
@@ -58,11 +51,7 @@ namespace FileManager
                     }
                     return true;
                 }
-            //}
-
             return false;
-
-
         }
         
 
