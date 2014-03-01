@@ -21,30 +21,58 @@ namespace FileManager
 
             RecursiveDeletion(Path.Combine(deleteFrom.ToString(), name));
 
-            //if (File.Exists(Path.Combine(deleteFrom.ToString(), name)))
+        }
+
+        public void CopyFileToDirectory(FileInfo fileToCopy, DirectoryInfo targetDir)
+        {
+            
+            File.Copy(Path.GetFullPath(fileToCopy.FullName), Path.Combine(targetDir.FullName, fileToCopy.Name));
+        }
+
+        public void MoveFileToDirectory(FileInfo fileToCopy, DirectoryInfo targetDir)
+        {
+            File.Move(Path.GetFullPath(fileToCopy.FullName), Path.Combine(targetDir.FullName, fileToCopy.Name));
+        }
+
+        public bool IsFileContentEqual(FileInfo file1, FileInfo file2)
+        {
+            //SidePanel sidePanel2 = (sidePanel1 == this.sidePanel1) ? this.sidePanel2 : this.sidePanel1;
+
+            //string path1 = Path.Combine(sidePanel1.CurrentDirectory, sidePanel1.SelectedItem.ToString());
+            //string path2 = Path.Combine(sidePanel2.CurrentDirectory, sidePanel2.SelectedItem.ToString());
+
+            //if (sidePanel1.SelectedItem != null && sidePanel1.SelectedItem != null
+            //    /*&& File.Exists(path1) && File.Exists(path2) */)
             //{
-            //    if (MessageBox.Show("Are You sure you want to delete the file " + name + "?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                byte[] fileInBytes1 = File.ReadAllBytes(file1.FullName);
+                byte[] fileInBytes2 = File.ReadAllBytes(file2.FullName);
 
-            //        File.Delete(Path.Combine(deleteFrom.ToString(), name));
-            //    //RefreshLists();
+                if (fileInBytes1.Length == fileInBytes2.Length)
+                {
+                    for (int i = 0; i < file1.Length; i++)
+                    {
+                        if (fileInBytes1[i] != fileInBytes2[i])
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             //}
-            //else
 
-            //if (Directory.Exists(Path.Combine(deleteFrom.ToString(), name)))
-            //{
-            //    if (
-            //        MessageBox.Show(
-            //            "Are You sure you want to delete the folder " + name + " \nand all of its contents?",
-            //            "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            //    {
-            //        RecursiveDeletion(Path.Combine(deleteFrom.ToString(), name));
-            //    }
+            return false;
 
-
-            //    //RefreshLists();
-            //}
 
         }
+        
+
+        public bool AreDirectoriesEqual(DirectoryInfo dir1, DirectoryInfo dir2)
+        {
+            return new DirCompare().DirEquals(dir1, dir2);
+        }
+
+
+        
 
         public void DeleteFile(DirectoryInfo deleteFrom, string name)
         {
@@ -133,6 +161,40 @@ namespace FileManager
             itemsFound.AddRange(new DirectoryInfo(currentPath).GetFiles(filterValue, SearchOption.TopDirectoryOnly));
 
             return itemsFound;
+        }
+
+
+        private class DirCompare //Inner class only for directory comparison
+        {
+
+            public bool DirEquals(DirectoryInfo dir1, DirectoryInfo dir2)
+            {
+                if (dir1 == null || dir2 == null)
+                    return false;
+
+                if ((dir1.GetFiles().Length != dir2.GetFiles().Length) || (dir1.GetDirectories().Length != dir2.GetDirectories().Length))
+                    return false;
+
+                for (int i = 0; i < dir1.GetFiles().Length; i++)
+                {
+                    if (FileEquals(dir1.GetFiles()[i], dir2.GetFiles()[i]) == false)
+                        return false;
+                }
+
+                for (int i = 0; i < dir1.GetDirectories().Length; i++)
+                {
+                    if (DirEquals(dir1.GetDirectories()[i], dir2.GetDirectories()[i]) == false)
+                        return false;
+                }
+
+                return true;
+            }
+
+            public bool FileEquals(FileInfo file1, FileInfo file2)
+            {
+                return (file1.Name == file2.Name && file1.Length == file2.Length);
+            }
+
         }
     }
 }

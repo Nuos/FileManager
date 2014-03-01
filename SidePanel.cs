@@ -12,37 +12,33 @@ namespace FileManager
 	{
 		private DirectoryInfo _curDir;
         private string _curPath;
-	    private MainForm _parentMainForm;
 
 	    public const string InitialDirectory = @"C:\";
 
 	    public delegate void OperateInFolder (DirectoryInfo directory, string name);
 
-	    public delegate void OperateInTwoFolders(DirectoryInfo source, DirectoryInfo target);
-
 	    public delegate void OperateOnGUI();
 
-	    public static event OperateInFolder DeleteFromFolder;
-	    public static event OperateInTwoFolders CopyFileToFolder;
-	    public static event OperateInTwoFolders MoveFileToFolder;
-	    public static event OperateOnGUI RefreshBothLists;
+	    public delegate void OperateOnThisPanel(SidePanel sender);
+
+	    public static event OperateInFolder OnDeleteFromFolderClicked;
+	    public static event OperateOnGUI OnRefreshListClicked;
+	    public static event OperateOnGUI OnDirectoryCompareClicked;
+	    public static event OperateOnThisPanel OnCopyFileClicked;
+	    public static event OperateOnThisPanel OnMoveFileClicked;
+	    public static event OperateOnGUI OnFileCompareClicked;
 
 
-
-
-		public SidePanel(MainForm mainForm)
+	    public SidePanel(MainForm mainForm)
 		{
 			InitializeComponent();
-		    this._parentMainForm = mainForm;
             comboBoxDrives.DropDownStyle = ComboBoxStyle.DropDownList;
             
             comboBoxDrives.Items.AddRange(DriveInfo.GetDrives());
 		    comboBoxDrives.SelectedItem = comboBoxDrives.Items[0];
+        }
 
-
-		}
-
-        public Object SelectedItem
+        public object SelectedItem
         {
             get { return listBox1.SelectedItem; }
             
@@ -218,57 +214,35 @@ namespace FileManager
 
         private void copyItemBtn_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedItem != null)
-                try
-                {
-                    _parentMainForm.Copy(this, listBox1.SelectedItem.ToString());
-                }
+            if (OnCopyFileClicked != null)
+                OnCopyFileClicked(this);
 
-                catch (IOException exception)
-                {
-                    MessageBox.Show(exception.Message);
-                }
-
-               
         }
 
         private void moveItemBtn_Click(object sender, EventArgs e)
         {
-            _parentMainForm.Copy(this, listBox1.SelectedItem.ToString());
-            //_parentMainForm.Delete(this, listBox1.SelectedItem.ToString()); //TEMPORARY
+            if (OnMoveFileClicked != null)
+                OnMoveFileClicked(this);
         }
 
         private void refreshListsBtn_Click(object sender, EventArgs e)
         {
-            if (RefreshBothLists != null)
-                RefreshBothLists();
+            if (OnRefreshListClicked != null)
+                OnRefreshListClicked();
         }
 
         private void deleteItemBtn_Click(object sender, EventArgs e)
         {
-            //_parentMainForm.Delete(this, listBox1.SelectedItem.ToString());
-            if (DeleteFromFolder != null)
-                DeleteFromFolder(new DirectoryInfo(CurrentDirectory), this.SelectedItem.ToString());
+            if (OnDeleteFromFolderClicked != null)
+                OnDeleteFromFolderClicked(new DirectoryInfo(CurrentDirectory), this.SelectedItem.ToString());
         }
 
         private void compareDirsBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if(_parentMainForm.DirectoriesEqual())
-                    MessageBox.Show("Folders are equal!", "Result");
-                else
-                {
-                    MessageBox.Show("Folders are NOT equal!", "Result");
-                }
 
+            if (OnDirectoryCompareClicked != null)
+                OnDirectoryCompareClicked();
 
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("One or more selections isn't a folder!", "Error");
-            }
-            
         }
 
         private void pathBox_KeyUp(object sender, KeyEventArgs e)
@@ -295,27 +269,18 @@ namespace FileManager
             }
         }
 
+
+
         private void pathBox_Leave(object sender, EventArgs e)
         {
             pathBox.Text = CurrentDirectory;
         }
 
+
         private void compareFilesBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (_parentMainForm.FileContentEquals(this))
-                    MessageBox.Show("The files content is equal.", "Content Comparison");
-                else
-                {
-                    MessageBox.Show("The files content is different.", "Content Comparison");
-                }
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("One or more selections isn't a file!", "Error");
-            }
-
+            if (OnFileCompareClicked != null)
+                OnFileCompareClicked();
         }
 
         private void comboBoxDrives_SelectedIndexChanged(object sender, EventArgs e)
