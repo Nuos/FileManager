@@ -19,6 +19,10 @@ namespace FileManager
 
 	    public delegate void OperateOnGUI();
 
+        public delegate void OperateWithEvents(MouseEventArgs e);
+
+        public delegate void OperateOnDirectory(DirectoryInfo directory);
+
 	    public delegate void OperateOnThisPanel(SidePanel sender);
 
 	    public static event OperateInFolder OnDeleteFromFolderClicked;
@@ -27,7 +31,8 @@ namespace FileManager
 	    public static event OperateOnThisPanel OnCopyFileClicked;
 	    public static event OperateOnThisPanel OnMoveFileClicked;
 	    public static event OperateOnGUI OnFileCompareClicked;
-
+        public static event OperateOnDirectory OnDirectoryCreateClicked;
+        public static event OperateWithEvents OnItemDoubleClicked;
 
 	    public SidePanel(MainForm mainForm)
 		{
@@ -44,7 +49,6 @@ namespace FileManager
             
         }
 
-
 	    public void RefreshList()
 	    {
             string dir = CurrentDirectory;
@@ -52,14 +56,11 @@ namespace FileManager
             CurrentDirectory = dir;
 	    }
 	    
-
 	    public string CurrentDirectory
 		{
 			get { return _curDir.FullName; }
 			set
 			{
-			    
-
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
@@ -106,7 +107,6 @@ namespace FileManager
 			        if (drive.ToString().ToUpper() == curDrive.ToUpper())
 			            comboBoxDrives.SelectedItem = drive;
 			    }
-
 			}
 		}
 
@@ -176,41 +176,8 @@ namespace FileManager
 
         private void newDirBtn_Click(object sender, EventArgs e)
         {
-            string newDirValue = PromptDialog.ShowDialog("Enter name:", "New Folder");
-            
-            if(newDirValue == "")
-                return;
-
-            if (isLegalName(newDirValue))
-            {
-                if (!(Directory.Exists(CurrentDirectory + newDirValue)))
-                    Directory.CreateDirectory(Path.Combine(CurrentDirectory, newDirValue));
-                else
-                {
-                    MessageBox.Show("This folder already exists!");
-                }
-                            
-            }
-            else
-                MessageBox.Show("Illegal folder name!");
-
-           // _parentMainForm.RefreshLists(); TEMPORARY - TAKE CARE!!!
+            OnDirectoryCreateClicked(new DirectoryInfo(CurrentDirectory));
         }
-
-	    private bool isLegalName(string name)
-	    {
-	        char[] invalid = Path.GetInvalidFileNameChars();
-
-	        for (int i = 0; i < name.Length; i++)
-	        {
-	            if ( name.Contains(invalid[i].ToString() ))
-	            {
-	                return false;
-	            }
-
-	        }
-	        return true;
-	    }
 
         private void copyItemBtn_Click(object sender, EventArgs e)
         {

@@ -23,6 +23,11 @@ namespace FileManager
 
         }
 
+        public void CreateDirectory(String path)
+        {
+            Directory.CreateDirectory(path);
+        }
+
         public void CopyFileToDirectory(FileInfo fileToCopy, DirectoryInfo targetDir)
         {
             

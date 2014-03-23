@@ -64,7 +64,7 @@
             this.comboBoxDrives});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(396, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(528, 28);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -74,7 +74,7 @@
             this.upDirBtn.Image = ((System.Drawing.Image)(resources.GetObject("upDirBtn.Image")));
             this.upDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.upDirBtn.Name = "upDirBtn";
-            this.upDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.upDirBtn.Size = new System.Drawing.Size(23, 25);
             this.upDirBtn.Text = "toolStripButton1";
             this.upDirBtn.ToolTipText = "Directory Up";
             this.upDirBtn.Click += new System.EventHandler(this.tsb_UpDir_Click);
@@ -85,7 +85,7 @@
             this.rootDirBtn.Image = ((System.Drawing.Image)(resources.GetObject("rootDirBtn.Image")));
             this.rootDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.rootDirBtn.Name = "rootDirBtn";
-            this.rootDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.rootDirBtn.Size = new System.Drawing.Size(23, 25);
             this.rootDirBtn.ToolTipText = "Root Directory";
             this.rootDirBtn.Click += new System.EventHandler(this.rootDirBtn_Click);
             // 
@@ -95,7 +95,7 @@
             this.newDirBtn.Image = ((System.Drawing.Image)(resources.GetObject("newDirBtn.Image")));
             this.newDirBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newDirBtn.Name = "newDirBtn";
-            this.newDirBtn.Size = new System.Drawing.Size(23, 22);
+            this.newDirBtn.Size = new System.Drawing.Size(23, 25);
             this.newDirBtn.ToolTipText = "New Folder";
             this.newDirBtn.Click += new System.EventHandler(this.newDirBtn_Click);
             // 
@@ -105,7 +105,7 @@
             this.copyItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("copyItemBtn.Image")));
             this.copyItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyItemBtn.Name = "copyItemBtn";
-            this.copyItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.copyItemBtn.Size = new System.Drawing.Size(23, 25);
             this.copyItemBtn.Text = "Copy File";
             this.copyItemBtn.Click += new System.EventHandler(this.copyItemBtn_Click);
             // 
@@ -115,7 +115,7 @@
             this.moveItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("moveItemBtn.Image")));
             this.moveItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveItemBtn.Name = "moveItemBtn";
-            this.moveItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.moveItemBtn.Size = new System.Drawing.Size(23, 25);
             this.moveItemBtn.Text = "Move";
             this.moveItemBtn.Click += new System.EventHandler(this.moveItemBtn_Click);
             // 
@@ -125,7 +125,7 @@
             this.refreshListsBtn.Image = ((System.Drawing.Image)(resources.GetObject("refreshListsBtn.Image")));
             this.refreshListsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshListsBtn.Name = "refreshListsBtn";
-            this.refreshListsBtn.Size = new System.Drawing.Size(23, 22);
+            this.refreshListsBtn.Size = new System.Drawing.Size(23, 25);
             this.refreshListsBtn.Text = "Refresh Lists";
             this.refreshListsBtn.Click += new System.EventHandler(this.refreshListsBtn_Click);
             // 
@@ -135,7 +135,7 @@
             this.deleteItemBtn.Image = ((System.Drawing.Image)(resources.GetObject("deleteItemBtn.Image")));
             this.deleteItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteItemBtn.Name = "deleteItemBtn";
-            this.deleteItemBtn.Size = new System.Drawing.Size(23, 22);
+            this.deleteItemBtn.Size = new System.Drawing.Size(23, 25);
             this.deleteItemBtn.Text = "Delete Item";
             this.deleteItemBtn.Click += new System.EventHandler(this.deleteItemBtn_Click);
             // 
@@ -145,7 +145,7 @@
             this.compareDirsBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareDirsBtn.Image")));
             this.compareDirsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.compareDirsBtn.Name = "compareDirsBtn";
-            this.compareDirsBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareDirsBtn.Size = new System.Drawing.Size(23, 25);
             this.compareDirsBtn.Text = "Compare Folders";
             this.compareDirsBtn.Click += new System.EventHandler(this.compareDirsBtn_Click);
             // 
@@ -155,7 +155,7 @@
             this.compareFilesBtn.Image = ((System.Drawing.Image)(resources.GetObject("compareFilesBtn.Image")));
             this.compareFilesBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.compareFilesBtn.Name = "compareFilesBtn";
-            this.compareFilesBtn.Size = new System.Drawing.Size(23, 22);
+            this.compareFilesBtn.Size = new System.Drawing.Size(23, 25);
             this.compareFilesBtn.Text = "Compare Files Content";
             this.compareFilesBtn.Click += new System.EventHandler(this.compareFilesBtn_Click);
             // 
@@ -165,8 +165,9 @@
             this.txtEditorBtn.Image = ((System.Drawing.Image)(resources.GetObject("txtEditorBtn.Image")));
             this.txtEditorBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.txtEditorBtn.Name = "txtEditorBtn";
-            this.txtEditorBtn.Size = new System.Drawing.Size(23, 22);
-            this.txtEditorBtn.Text = "toolStripButton1";
+            this.txtEditorBtn.Size = new System.Drawing.Size(23, 25);
+            this.txtEditorBtn.Text = "toolStripButtom1";
+            this.txtEditorBtn.ToolTipText = "Create Test File";
             this.txtEditorBtn.Click += new System.EventHandler(this.txtEditorBtn_Click);
             // 
             // searchBtn
@@ -175,24 +176,26 @@
             this.searchBtn.Image = global::FileManager.Properties.Resources.search_16x16;
             this.searchBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.searchBtn.Name = "searchBtn";
-            this.searchBtn.Size = new System.Drawing.Size(23, 22);
+            this.searchBtn.Size = new System.Drawing.Size(23, 25);
             this.searchBtn.Text = "toolStripButton1";
+            this.searchBtn.ToolTipText = "Search";
             this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // comboBoxDrives
             // 
             this.comboBoxDrives.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.comboBoxDrives.Name = "comboBoxDrives";
-            this.comboBoxDrives.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxDrives.Size = new System.Drawing.Size(99, 28);
             this.comboBoxDrives.Sorted = true;
             this.comboBoxDrives.SelectedIndexChanged += new System.EventHandler(this.comboBoxDrives_SelectedIndexChanged);
             // 
             // pathBox
             // 
             this.pathBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pathBox.Location = new System.Drawing.Point(0, 25);
+            this.pathBox.Location = new System.Drawing.Point(0, 28);
+            this.pathBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pathBox.Name = "pathBox";
-            this.pathBox.Size = new System.Drawing.Size(396, 20);
+            this.pathBox.Size = new System.Drawing.Size(528, 22);
             this.pathBox.TabIndex = 1;
             this.pathBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pathBox_KeyUp);
             this.pathBox.Leave += new System.EventHandler(this.pathBox_Leave);
@@ -201,21 +204,24 @@
             // 
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 45);
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(0, 50);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(396, 411);
+            this.listBox1.Size = new System.Drawing.Size(528, 511);
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
             // SidePanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.pathBox);
             this.Controls.Add(this.toolStrip1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "SidePanel";
-            this.Size = new System.Drawing.Size(396, 456);
+            this.Size = new System.Drawing.Size(528, 561);
             this.Load += new System.EventHandler(this.SidePanel_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

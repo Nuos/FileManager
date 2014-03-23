@@ -21,7 +21,6 @@ namespace FileManager
             Subscribe();
             Application.Run(view);
             
-
         }
 
         
@@ -34,6 +33,7 @@ namespace FileManager
             SidePanel.OnCopyFileClicked += OnCopyFileClickedListner;
             SidePanel.OnMoveFileClicked += OnMoveFileClickedListner;
             SidePanel.OnFileCompareClicked += OnFileCompareClickedListner;
+            SidePanel.OnDirectoryCreateClicked += OnDirectoryCreateListner;
         }
 
         public void OnFileCompareClickedListner()
@@ -89,28 +89,72 @@ namespace FileManager
             }
         }
 
+        private void OnDirectoryCreateListner(DirectoryInfo CurrentDirectory)
+        {
+            string newDirValue = PromptDialog.ShowDialog("Enter name:", "New Folder");
+
+            if (newDirValue == "")
+                return;
+
+            if (isLegalName(newDirValue))
+            {
+                if (!(Directory.Exists(Path.Combine(CurrentDirectory.ToString(),newDirValue))))
+                    {
+                    model.CreateDirectory(Path.Combine(CurrentDirectory.ToString(), newDirValue));
+                    OnRefreshListsClickedListner();
+                    }
+                else
+                {
+                    MessageBox.Show("This folder already exists!");
+                }
+
+            }
+            else
+                MessageBox.Show("Illegal folder name!");
+        }
+
+        private bool isLegalName(string name)
+        {
+            char[] invalid = Path.GetInvalidFileNameChars();
+
+            for (int i = 0; i < name.Length; i++)
+            {
+                if (name.Contains(invalid[i].ToString()))
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+
         private void OnCopyFileClickedListner(SidePanel source)
         {
             SidePanel target = (source == view.SidePanelLeft) ? view.SidePanelRight : view.SidePanelLeft;
-
-            var sourceFile = new FileInfo(Path.Combine(source.CurrentDirectory, source.SelectedItem.ToString()));
-
-            var destinationFolder = new DirectoryInfo(target.CurrentDirectory);
-
-            if (File.Exists(sourceFile.FullName))
+            if (source.SelectedItem != null)
             {
-                if (!File.Exists(Path.Combine(destinationFolder.FullName, sourceFile.Name)))
+                var sourceFile = new FileInfo(Path.Combine(source.CurrentDirectory, source.SelectedItem.ToString()));
+
+                var destinationFolder = new DirectoryInfo(target.CurrentDirectory);
+
+                if (File.Exists(sourceFile.FullName))
                 {
-                    model.CopyFileToDirectory(sourceFile, destinationFolder);
-                    OnRefreshListsClickedListner();
+                    if (!File.Exists(Path.Combine(destinationFolder.FullName, sourceFile.Name)))
+                    {
+                        model.CopyFileToDirectory(sourceFile, destinationFolder);
+                        OnRefreshListsClickedListner();
+                    }
+                    else
+                    {
+                        MessageBox.Show("This file already exists in the destination folder!", "Cannot Copy",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                 }
-                else
-                {
-                    MessageBox.Show("This file already exists in the destination folder!", "Cannot Copy",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                
             }
+            else
+                MessageBox.Show("No file selected", "Cannot Copy",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void OnCompareDirectoriesClickedListner()
