@@ -14,7 +14,10 @@ namespace FileManager
     class Operation
     {
 
-        
+        public string[] GetDirectoryContents(string path)
+        {
+            return Directory.GetFileSystemEntries(path);
+        }
 
         public void DeleteDirectory(DirectoryInfo deleteFrom, string name)
         {
@@ -74,7 +77,7 @@ namespace FileManager
         }
 
 
-        private static void RecursiveDeletion(string path)
+        private void RecursiveDeletion(string path)
         {
             foreach (string thisPath in Directory.GetDirectories(path))
             {
@@ -89,7 +92,7 @@ namespace FileManager
 
         }
 
-        public static List<string> Search(string searchValue, DirectoryInfo directory, ListBox resultsListBox)
+        public List<string> Search(string searchValue, DirectoryInfo directory, ListBox resultsListBox)
         {
             var resultsList = new List<string>();
 
@@ -128,7 +131,7 @@ namespace FileManager
             return resultsList;
         }
 
-        public static bool IsDirectoryAccessable(string directory)
+        public bool IsDirectoryAccessable(string directory)
         {
 
             try

@@ -17,7 +17,7 @@ namespace FileManager
 
 	    public delegate void OperateInFolder (DirectoryInfo directory, string name);
 
-	    public delegate void OperateOnGUI();
+	    public delegate void OperateOnGui();
 
         public delegate void OperateWithEvents(MouseEventArgs e);
 
@@ -26,13 +26,14 @@ namespace FileManager
 	    public delegate void OperateOnThisPanel(SidePanel sender);
 
 	    public static event OperateInFolder OnDeleteFromFolderClicked;
-	    public static event OperateOnGUI OnRefreshListClicked;
-	    public static event OperateOnGUI OnDirectoryCompareClicked;
+	    public static event OperateOnGui OnRefreshListClicked;
+	    public static event OperateOnGui OnDirectoryCompareClicked;
 	    public static event OperateOnThisPanel OnCopyFileClicked;
 	    public static event OperateOnThisPanel OnMoveFileClicked;
-	    public static event OperateOnGUI OnFileCompareClicked;
+	    public static event OperateOnGui OnFileCompareClicked;
         public static event OperateOnDirectory OnDirectoryCreateClicked;
-        public static event OperateWithEvents OnItemDoubleClicked;
+        public static event OperateOnThisPanel OnItemDoubleClicked;
+	    public static event OperateOnThisPanel OnSearchButtonClicked;
 
 	    public SidePanel(MainForm mainForm)
 		{
@@ -42,6 +43,11 @@ namespace FileManager
             comboBoxDrives.Items.AddRange(DriveInfo.GetDrives());
 		    comboBoxDrives.SelectedItem = comboBoxDrives.Items[0];
         }
+
+	    public ListBox SideList
+	    {
+	        get { return this.listBox1; }
+	    }
 
         public object SelectedItem
         {
@@ -64,15 +70,15 @@ namespace FileManager
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
-			    try //Get access to the directory
-			    {
-			        DirectorySecurity ds = Directory.GetAccessControl(value);
-			    }
-			    catch (UnauthorizedAccessException exception)
-			    {
-			        MessageBox.Show(exception.Message, "Access denied");
-                    return;
-			    }
+                //try //Get access to the directory
+                //{
+                //    DirectorySecurity ds = Directory.GetAccessControl(value);
+                //}
+                //catch (UnauthorizedAccessException exception)
+                //{
+                //    MessageBox.Show(exception.Message, "Access denied");
+                //    return;
+                //}
 			    
 				_curDir = new DirectoryInfo(value);
 
@@ -278,23 +284,10 @@ namespace FileManager
             TextEditor txt = new TextEditor(Path.Combine(this.CurrentDirectory, filename));
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            string searchValue = PromptDialog.ShowDialog("Enter search term:", "Search");
-
-            if (!String.IsNullOrEmpty(searchValue))
-            {
-                listBox1.Items.Clear();
-                //this._curPath = "Search Results";
-
-                Operation.Search(searchValue, new DirectoryInfo(CurrentDirectory), listBox1);
-                listBox1.DataSource =  Operation.Search(searchValue, new DirectoryInfo(CurrentDirectory), listBox1);
-            }
+            if (OnSearchButtonClicked != null)
+                OnSearchButtonClicked(this);
         }
 
 

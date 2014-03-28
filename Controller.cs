@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,47 @@ namespace FileManager
             SidePanel.OnMoveFileClicked += OnMoveFileClickedListner;
             SidePanel.OnFileCompareClicked += OnFileCompareClickedListner;
             SidePanel.OnDirectoryCreateClicked += OnDirectoryCreateListner;
+            SidePanel.OnItemDoubleClicked += OnItemDoubleClickedListner;
+            SidePanel.OnSearchButtonClicked += OnSearchButtonClickedListner;
+        }
+
+
+
+        private void OnItemDoubleClickedListner(SidePanel source)
+        {
+            var selectedItemPath = Path.Combine(source.CurrentDirectory, source.SelectedItem.ToString());
+
+            if (Directory.Exists(selectedItemPath) && model.IsDirectoryAccessable(selectedItemPath))
+            {
+                source.SideList.Items.Clear();
+                source.SideList.DataSource = model.GetDirectoryContents(selectedItemPath);
+            }
+            else if (File.Exists(selectedItemPath))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(selectedItemPath);
+                }
+                catch (Win32Exception exception)
+                {
+
+                    MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+        }
+
+        private void OnSearchButtonClickedListner(SidePanel sourcePanel)
+        {
+            string searchValue = PromptDialog.ShowDialog("Enter search term:", "Search");
+
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+                sourcePanel.SideList.Items.Clear();
+                //this._curPath = "Search Results";
+
+                model.Search(searchValue, new DirectoryInfo(sourcePanel.CurrentDirectory), sourcePanel.SideList);
+                sourcePanel.SideList.DataSource = model.Search(searchValue, new DirectoryInfo(sourcePanel.CurrentDirectory), sourcePanel.SideList);
+            }
         }
 
         public void OnFileCompareClickedListner()
