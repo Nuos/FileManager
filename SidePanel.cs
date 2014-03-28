@@ -70,16 +70,6 @@ namespace FileManager
 				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
 					return;
 
-                //try //Get access to the directory
-                //{
-                //    DirectorySecurity ds = Directory.GetAccessControl(value);
-                //}
-                //catch (UnauthorizedAccessException exception)
-                //{
-                //    MessageBox.Show(exception.Message, "Access denied");
-                //    return;
-                //}
-			    
 				_curDir = new DirectoryInfo(value);
 
 			    listBox1.DataSource = null;
@@ -104,7 +94,6 @@ namespace FileManager
 
 				pathBox.Text = _curDir.ToString();
                 _curPath = value;
-			    //string curDrive = _curPath[0].ToString().ToUpper() + ":\";
 
 			    var curDrive = Path.GetPathRoot(_curPath);
 
