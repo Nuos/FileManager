@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileManager
 {
-    class Controller
+    internal class Controller
     {
-        private MainForm view;
-        private Operation model;
+        private readonly Operation model;
+        private readonly MainForm view;
 
         public Controller()
         {
-
             view = new MainForm();
             model = new Operation();
             Subscribe();
             Application.Run(view);
-            
         }
 
-        
 
         private void Subscribe()
         {
@@ -40,27 +33,30 @@ namespace FileManager
         }
 
 
-
         private void OnItemDoubleClickedListner(SidePanel source)
         {
-            var selectedItemPath = Path.Combine(source.CurrentDirectory, source.SelectedItem.ToString());
+            string selectedItemPath = Path.Combine(source.CurrentDirectory, source.SelectedItem.ToString());
 
             if (Directory.Exists(selectedItemPath) && model.IsDirectoryAccessable(selectedItemPath))
             {
-                source.SideList.Items.Clear();
-                source.SideList.DataSource = model.GetDirectoryContents(selectedItemPath);
+                source.SideList.DataSource = null;
+                source.CurrentDirectory = selectedItemPath;
             }
             else if (File.Exists(selectedItemPath))
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(selectedItemPath);
+                    model.Execute(new FileInfo(selectedItemPath));
                 }
                 catch (Win32Exception exception)
                 {
-
                     MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
+            }
+            else if (model.IsDirectoryAccessable(selectedItemPath) == false)
+            {
+                MessageBox.Show("Sorry, you don't have permission to access this folder.", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             }
         }
 
@@ -74,37 +70,40 @@ namespace FileManager
                 //this._curPath = "Search Results";
 
                 model.Search(searchValue, new DirectoryInfo(sourcePanel.CurrentDirectory), sourcePanel.SideList);
-                sourcePanel.SideList.DataSource = model.Search(searchValue, new DirectoryInfo(sourcePanel.CurrentDirectory), sourcePanel.SideList);
+                sourcePanel.SideList.DataSource = model.Search(searchValue,
+                    new DirectoryInfo(sourcePanel.CurrentDirectory), sourcePanel.SideList);
             }
         }
 
         public void OnFileCompareClickedListner()
         {
-
             if (view.SidePanelLeft.SelectedItem != null && view.SidePanelRight.SelectedItem != null)
             {
-                string path1 = Path.Combine(view.SidePanelLeft.CurrentDirectory, view.SidePanelLeft.SelectedItem.ToString());
-                string path2 = Path.Combine(view.SidePanelRight.CurrentDirectory, view.SidePanelRight.SelectedItem.ToString());
-                
+                string path1 = Path.Combine(view.SidePanelLeft.CurrentDirectory,
+                    view.SidePanelLeft.SelectedItem.ToString());
+                string path2 = Path.Combine(view.SidePanelRight.CurrentDirectory,
+                    view.SidePanelRight.SelectedItem.ToString());
+
 
                 if (File.Exists(path1) && File.Exists(path2))
                 {
                     if (model.IsFileContentEqual(new FileInfo(path1), new FileInfo(path2)))
                     {
-                        MessageBox.Show("The files content is equal.", "Content Comparison", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("The files content is equal.", "Content Comparison", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show("The files content is different.", "Content Comparison", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("The files content is different.", "Content Comparison", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("One or more selections is not a file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("One or more selections is not a file!", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
-
         }
 
         private void OnMoveFileClickedListner(SidePanel source)
@@ -127,7 +126,6 @@ namespace FileManager
                     MessageBox.Show("This file already exists in the destination folder!", "Cannot Move",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
         }
 
@@ -140,16 +138,15 @@ namespace FileManager
 
             if (isLegalName(newDirValue))
             {
-                if (!(Directory.Exists(Path.Combine(CurrentDirectory.ToString(),newDirValue))))
-                    {
+                if (!(Directory.Exists(Path.Combine(CurrentDirectory.ToString(), newDirValue))))
+                {
                     model.CreateDirectory(Path.Combine(CurrentDirectory.ToString(), newDirValue));
                     OnRefreshListsClickedListner();
-                    }
+                }
                 else
                 {
                     MessageBox.Show("This folder already exists!");
                 }
-
             }
             else
                 MessageBox.Show("Illegal folder name!");
@@ -165,7 +162,6 @@ namespace FileManager
                 {
                     return false;
                 }
-
             }
             return true;
         }
@@ -191,19 +187,18 @@ namespace FileManager
                         MessageBox.Show("This file already exists in the destination folder!", "Cannot Copy",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
                 }
             }
             else
                 MessageBox.Show("No file selected", "Cannot Copy",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void OnCompareDirectoriesClickedListner()
         {
             string dir1 = Path.Combine(view.SidePanelLeft.CurrentDirectory, view.SidePanelLeft.SelectedItem.ToString());
             string dir2 = Path.Combine(view.SidePanelRight.CurrentDirectory, view.SidePanelRight.SelectedItem.ToString());
-         
+
 
             if (view.SidePanelLeft.SelectedItem != null && view.SidePanelRight.SelectedItem != null
                 && Directory.Exists(dir1) && Directory.Exists(dir2))
@@ -218,7 +213,8 @@ namespace FileManager
                 }
             else
             {
-                MessageBox.Show("One or more selections isn't a folder!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("One or more selections isn't a folder!", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -233,7 +229,7 @@ namespace FileManager
             if (File.Exists(Path.Combine(containingDirectory.ToString(), itemToRemove)))
             {
                 if (MessageBox.Show("Are You sure you want to delete the file " + itemToRemove + "?", "Confirm delete",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     model.DeleteFile(containingDirectory, itemToRemove);
                     OnRefreshListsClickedListner();
@@ -249,7 +245,6 @@ namespace FileManager
                     model.DeleteDirectory(containingDirectory, itemToRemove);
                     OnRefreshListsClickedListner();
                 }
-                
             }
         }
     }

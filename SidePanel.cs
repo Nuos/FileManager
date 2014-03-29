@@ -1,161 +1,156 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Serialization;
-using System.Security.AccessControl;
 using System.Windows.Forms;
 
 namespace FileManager
 {
-	public partial class SidePanel : UserControl
-	{
-		private DirectoryInfo _curDir;
-        private string _curPath;
-
-	    public const string InitialDirectory = @"C:\";
-
-	    public delegate void OperateInFolder (DirectoryInfo directory, string name);
-
-	    public delegate void OperateOnGui();
-
-        public delegate void OperateWithEvents(MouseEventArgs e);
+    public partial class SidePanel : UserControl
+    {
+        public delegate void OperateInFolder(DirectoryInfo directory, string name);
 
         public delegate void OperateOnDirectory(DirectoryInfo directory);
 
-	    public delegate void OperateOnThisPanel(SidePanel sender);
+        public delegate void OperateOnGui();
 
-	    public static event OperateInFolder OnDeleteFromFolderClicked;
-	    public static event OperateOnGui OnRefreshListClicked;
-	    public static event OperateOnGui OnDirectoryCompareClicked;
-	    public static event OperateOnThisPanel OnCopyFileClicked;
-	    public static event OperateOnThisPanel OnMoveFileClicked;
-	    public static event OperateOnGui OnFileCompareClicked;
-        public static event OperateOnDirectory OnDirectoryCreateClicked;
-        public static event OperateOnThisPanel OnItemDoubleClicked;
-	    public static event OperateOnThisPanel OnSearchButtonClicked;
+        public delegate void OperateOnThisPanel(SidePanel sender);
 
-	    public SidePanel(MainForm mainForm)
-		{
-			InitializeComponent();
+        public delegate void OperateWithEvents(MouseEventArgs e);
+
+        public const string InitialDirectory = @"C:\";
+        private DirectoryInfo _curDir;
+        private string _curPath;
+
+        public SidePanel()
+        {
+            InitializeComponent();
             comboBoxDrives.DropDownStyle = ComboBoxStyle.DropDownList;
-            
+
             comboBoxDrives.Items.AddRange(DriveInfo.GetDrives());
-		    comboBoxDrives.SelectedItem = comboBoxDrives.Items[0];
+            comboBoxDrives.SelectedItem = comboBoxDrives.Items[0];
         }
 
-	    public ListBox SideList
-	    {
-	        get { return this.listBox1; }
-	    }
+        public ListBox SideList
+        {
+            get { return listBox1; }
+        }
 
         public object SelectedItem
         {
             get { return listBox1.SelectedItem; }
-            
         }
 
-	    public void RefreshList()
-	    {
-            string dir = CurrentDirectory;
-            CurrentDirectory = SidePanel.InitialDirectory;
-            CurrentDirectory = dir;
-	    }
-	    
-	    public string CurrentDirectory
-		{
-			get { return _curDir.FullName; }
-			set
-			{
-				if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
-					return;
+        public string CurrentDirectory
+        {
+            get { return _curDir.FullName; }
+            set
+            {
+                if (_curDir != null && (value == _curDir.FullName || !Directory.Exists(value))) //if no Dir or the same
+                    return;
 
-				_curDir = new DirectoryInfo(value);
+                _curDir = new DirectoryInfo(value);
 
-			    listBox1.DataSource = null;
-				listBox1.Items.Clear();
+                listBox1.DataSource = null;
+                listBox1.Items.Clear();
 
 
-                foreach (string path in Directory.GetDirectories(value)) // Cut the string to only show names without path for Dirs
+                foreach (string path in Directory.GetDirectories(value))
+                    // Cut the string to only show names without path for Dirs
                 {
                     var dirName = new DirectoryInfo(path);
                     listBox1.Items.Add(dirName.Name);
-
                 }
 
-                foreach (string path in Directory.GetFiles(value)) // Cut the string to only show names without path for Files
+                foreach (string path in Directory.GetFiles(value))
+                    // Cut the string to only show names without path for Files
                 {
                     listBox1.Items.Add(Path.GetFileName(path));
-
                 }
 
                 //listBox1.Items.AddRange(Directory.GetDirectories(value));
                 //listBox1.Items.AddRange(Directory.GetFiles(value));
 
-				pathBox.Text = _curDir.ToString();
+                pathBox.Text = _curDir.ToString();
                 _curPath = value;
 
-			    var curDrive = Path.GetPathRoot(_curPath);
+                string curDrive = Path.GetPathRoot(_curPath);
 
-			    foreach (object drive in comboBoxDrives.Items)
-			    {
-			        if (drive.ToString().ToUpper() == curDrive.ToUpper())
-			            comboBoxDrives.SelectedItem = drive;
-			    }
-			}
-		}
-
-
-
-		private void SidePanel_Load(object sender, EventArgs e)
-		{
-			CurrentDirectory = InitialDirectory;
-		}
-
-		private void tsb_UpDir_Click(object sender, EventArgs e)
-		{
-            if (Directory.GetParent(CurrentDirectory) != null)
-			CurrentDirectory = 
-				Directory.GetParent(CurrentDirectory).ToString();
-		}
-
-		private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			base.OnDoubleClick(e);
-
-			if (listBox1.SelectedItem == null)
-				return;
-
-			string itemString = listBox1.SelectedItem.ToString();
-
-            if (pathBox.Text != "Search Results") 
-                itemString = Path.Combine(_curPath, itemString);
-            
-
-
-			if (Directory.Exists(itemString))
-			{
-				CurrentDirectory = itemString;
-			} else if (File.Exists(itemString))
-			{
-
-			    try
-			    {
-			        System.Diagnostics.Process.Start(itemString);
-			    }
-                catch (Win32Exception exception)
+                foreach (object drive in comboBoxDrives.Items)
                 {
-                    
-                    MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK , MessageBoxIcon.Exclamation);
+                    if (drive.ToString().ToUpper() == curDrive.ToUpper())
+                        comboBoxDrives.SelectedItem = drive;
                 }
-			}
-		}
+            }
+        }
 
+        public static event OperateInFolder OnDeleteFromFolderClicked;
+        public static event OperateOnGui OnRefreshListClicked;
+        public static event OperateOnGui OnDirectoryCompareClicked;
+        public static event OperateOnThisPanel OnCopyFileClicked;
+        public static event OperateOnThisPanel OnMoveFileClicked;
+        public static event OperateOnGui OnFileCompareClicked;
+        public static event OperateOnDirectory OnDirectoryCreateClicked;
+        public static event OperateOnThisPanel OnItemDoubleClicked;
+        public static event OperateOnThisPanel OnSearchButtonClicked;
+
+        public void RefreshList()
+        {
+            string dir = CurrentDirectory;
+            CurrentDirectory = InitialDirectory;
+            CurrentDirectory = dir;
+        }
+
+
+        private void SidePanel_Load(object sender, EventArgs e)
+        {
+            CurrentDirectory = InitialDirectory;
+        }
+
+        private void tsb_UpDir_Click(object sender, EventArgs e)
+        {
+            if (Directory.GetParent(CurrentDirectory) != null)
+                CurrentDirectory =
+                    Directory.GetParent(CurrentDirectory).ToString();
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (OnItemDoubleClicked != null)
+                OnItemDoubleClicked(this);
+            //base.OnDoubleClick(e);
+
+            //if (listBox1.SelectedItem == null)
+            //    return;
+
+            //string itemString = listBox1.SelectedItem.ToString();
+
+            //if (pathBox.Text != "Search Results")
+            //    itemString = Path.Combine(_curPath, itemString);
+
+
+            //if (Directory.Exists(itemString))
+            //{
+            //    CurrentDirectory = itemString;
+            //}
+            //else if (File.Exists(itemString))
+            //{
+            //    try
+            //    {
+            //        Process.Start(itemString);
+            //    }
+            //    catch (Win32Exception exception)
+            //    {
+            //        MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    }
+            //}
+        }
 
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Enter)
+            if (e.KeyChar == (char) Keys.Enter)
             {
                 if (Directory.Exists(pathBox.Text))
                 {
@@ -178,7 +173,6 @@ namespace FileManager
         {
             if (OnCopyFileClicked != null)
                 OnCopyFileClicked(this);
-
         }
 
         private void moveItemBtn_Click(object sender, EventArgs e)
@@ -196,20 +190,18 @@ namespace FileManager
         private void deleteItemBtn_Click(object sender, EventArgs e)
         {
             if (OnDeleteFromFolderClicked != null)
-                OnDeleteFromFolderClicked(new DirectoryInfo(CurrentDirectory), this.SelectedItem.ToString());
+                OnDeleteFromFolderClicked(new DirectoryInfo(CurrentDirectory), SelectedItem.ToString());
         }
 
         private void compareDirsBtn_Click(object sender, EventArgs e)
         {
-
             if (OnDirectoryCompareClicked != null)
                 OnDirectoryCompareClicked();
-
         }
 
         private void pathBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyValue == (char)Keys.Enter)
+            if (e.KeyValue == (char) Keys.Enter)
             {
                 try
                 {
@@ -220,17 +212,12 @@ namespace FileManager
                 }
                 catch (ArgumentException)
                 {
-
-                    var filterItems = Operation.FilterItems(pathBox.Text);
+                    List<FileSystemInfo> filterItems = Operation.FilterItems(pathBox.Text);
                     if (filterItems != null)
                         listBox1.DataSource = filterItems;
                 }
-                
-
-                
             }
         }
-
 
 
         private void pathBox_Leave(object sender, EventArgs e)
@@ -247,10 +234,10 @@ namespace FileManager
 
         private void comboBoxDrives_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DriveInfo selectedDrive = (DriveInfo) comboBoxDrives.SelectedItem;
+            var selectedDrive = (DriveInfo) comboBoxDrives.SelectedItem;
             if (selectedDrive.IsReady)
             {
-                this.CurrentDirectory = comboBoxDrives.SelectedItem.ToString();
+                CurrentDirectory = comboBoxDrives.SelectedItem.ToString();
             }
             else
             {
@@ -261,16 +248,14 @@ namespace FileManager
                     if (currentDrive.ToString().ToUpper() == curDrive.ToUpper())
                         comboBoxDrives.SelectedItem = currentDrive;
                 }
-
             }
-
         }
 
         private void txtEditorBtn_Click(object sender, EventArgs e)
         {
             string filename = PromptDialog.ShowDialog("Enter file name:", "New text file");
 
-            TextEditor txt = new TextEditor(Path.Combine(this.CurrentDirectory, filename));
+            var txt = new TextEditor(Path.Combine(CurrentDirectory, filename));
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -278,9 +263,5 @@ namespace FileManager
             if (OnSearchButtonClicked != null)
                 OnSearchButtonClicked(this);
         }
-
-
-	}
-
-
+    }
 }

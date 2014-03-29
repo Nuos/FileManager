@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileManager
 {
-    class Operation
+    internal class Operation
     {
-
         public string[] GetDirectoryContents(string path)
         {
             return Directory.GetFileSystemEntries(path);
         }
 
+        public void Execute(FileInfo file)
+        {
+            Process.Start(file.FullName);
+        }
+
         public void DeleteDirectory(DirectoryInfo deleteFrom, string name)
         {
-
             RecursiveDeletion(Path.Combine(deleteFrom.ToString(), name));
-
         }
 
         public void CreateDirectory(String path)
@@ -33,7 +31,6 @@ namespace FileManager
 
         public void CopyFileToDirectory(FileInfo fileToCopy, DirectoryInfo targetDir)
         {
-            
             File.Copy(Path.GetFullPath(fileToCopy.FullName), Path.Combine(targetDir.FullName, fileToCopy.Name));
         }
 
@@ -44,32 +41,29 @@ namespace FileManager
 
         public bool IsFileContentEqual(FileInfo file1, FileInfo file2)
         {
+            byte[] fileInBytes1 = File.ReadAllBytes(file1.FullName);
+            byte[] fileInBytes2 = File.ReadAllBytes(file2.FullName);
 
-                byte[] fileInBytes1 = File.ReadAllBytes(file1.FullName);
-                byte[] fileInBytes2 = File.ReadAllBytes(file2.FullName);
-
-                if (fileInBytes1.Length == fileInBytes2.Length)
+            if (fileInBytes1.Length == fileInBytes2.Length)
+            {
+                for (int i = 0; i < file1.Length; i++)
                 {
-                    for (int i = 0; i < file1.Length; i++)
+                    if (fileInBytes1[i] != fileInBytes2[i])
                     {
-                        if (fileInBytes1[i] != fileInBytes2[i])
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    return true;
                 }
+                return true;
+            }
             return false;
         }
-        
+
 
         public bool AreDirectoriesEqual(DirectoryInfo dir1, DirectoryInfo dir2)
         {
             return new DirCompare().DirEquals(dir1, dir2);
         }
 
-
-        
 
         public void DeleteFile(DirectoryInfo deleteFrom, string name)
         {
@@ -89,7 +83,6 @@ namespace FileManager
 
 
             Directory.Delete(Path.GetFullPath(path));
-
         }
 
         public List<string> Search(string searchValue, DirectoryInfo directory, ListBox resultsListBox)
@@ -102,30 +95,25 @@ namespace FileManager
 
             foreach (string directoryIn in Directory.GetDirectories(Path.GetFullPath(directory.ToString())))
             {
+                var innerDirectory = new DirectoryInfo(Path.Combine(directory.ToString(), directoryIn));
 
-                
 
-                DirectoryInfo innerDirectory = new DirectoryInfo(Path.Combine(directory.ToString(), directoryIn));
-
-                
                 if (String.Equals(searchValue, innerDirectory.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
                     resultsList.Add(Path.Combine(directory.ToString(), directoryIn));
                 }
 
-                resultsList.AddRange( Search(searchValue, innerDirectory, resultsListBox) ); //recursive function
+                resultsList.AddRange(Search(searchValue, innerDirectory, resultsListBox)); //recursive function
             }
 
             foreach (string fileIn in Directory.GetFiles(Path.GetFullPath(directory.ToString())))
             {
-              
-
-                if (String.Equals(searchValue, Path.GetFileNameWithoutExtension(fileIn), StringComparison.CurrentCultureIgnoreCase) 
+                if (String.Equals(searchValue, Path.GetFileNameWithoutExtension(fileIn),
+                    StringComparison.CurrentCultureIgnoreCase)
                     || String.Equals(searchValue, Path.GetFileName(fileIn), StringComparison.CurrentCultureIgnoreCase))
                 {
-                    resultsList.Add( Path.Combine(directory.ToString(), fileIn) );
-                    
-                }              
+                    resultsList.Add(Path.Combine(directory.ToString(), fileIn));
+                }
             }
 
             return resultsList;
@@ -133,7 +121,6 @@ namespace FileManager
 
         public bool IsDirectoryAccessable(string directory)
         {
-
             try
             {
                 Directory.GetDirectories(directory); //no other way to check access permissions ;( so much overhead...
@@ -143,16 +130,14 @@ namespace FileManager
             {
                 return false;
             }
-            
-            
         }
 
         public static List<FileSystemInfo> FilterItems(string fullPath)
         {
-            var filterValue = fullPath.Substring(fullPath.LastIndexOf("\\")+1);
-            var currentPath = fullPath.Remove(fullPath.LastIndexOf("\\"));
+            string filterValue = fullPath.Substring(fullPath.LastIndexOf("\\") + 1);
+            string currentPath = fullPath.Remove(fullPath.LastIndexOf("\\"));
 
-            List<FileSystemInfo> itemsFound = new List<FileSystemInfo>();
+            var itemsFound = new List<FileSystemInfo>();
 
             itemsFound.AddRange(new DirectoryInfo(currentPath).GetDirectories(filterValue, SearchOption.TopDirectoryOnly));
             itemsFound.AddRange(new DirectoryInfo(currentPath).GetFiles(filterValue, SearchOption.TopDirectoryOnly));
@@ -163,13 +148,13 @@ namespace FileManager
 
         private class DirCompare //Inner class only for directory comparison
         {
-
             public bool DirEquals(DirectoryInfo dir1, DirectoryInfo dir2)
             {
                 if (dir1 == null || dir2 == null)
                     return false;
 
-                if ((dir1.GetFiles().Length != dir2.GetFiles().Length) || (dir1.GetDirectories().Length != dir2.GetDirectories().Length))
+                if ((dir1.GetFiles().Length != dir2.GetFiles().Length) ||
+                    (dir1.GetDirectories().Length != dir2.GetDirectories().Length))
                     return false;
 
                 for (int i = 0; i < dir1.GetFiles().Length; i++)
@@ -191,7 +176,6 @@ namespace FileManager
             {
                 return (file1.Name == file2.Name && file1.Length == file2.Length);
             }
-
         }
     }
 }

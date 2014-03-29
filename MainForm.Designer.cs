@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.sidePanel1 = new FileManager.SidePanel(this);
-            this.sidePanel2 = new FileManager.SidePanel(this);
+            this.sidePanel1 = new FileManager.SidePanel();
+            this.sidePanel2 = new FileManager.SidePanel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
