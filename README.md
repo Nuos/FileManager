@@ -21,5 +21,5 @@ To open the project in MS Visual studio, simply download it and run "FileManager
 There is also an executable file in "\bin\Debug\FileManager.exe".
 
 
-**This project has been made by Dmitry Ryskin in 2014.
+**This project has been made by Dmitry Ryskin and Bogdan Kirylyuk in 2014.
 
